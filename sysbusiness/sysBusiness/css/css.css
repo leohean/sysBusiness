@@ -1,0 +1,16 @@
+.center{
+    text-align:center;
+}
+
+.example-item {
+    display: inline-block; 
+    text-align: center; 
+}
+
+.orange-color{
+    background-color: rgba(253,128,0,1);
+}
+
+.gray-color{
+    background-color: rgb(235, 235, 235);
+}
