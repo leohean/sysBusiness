@@ -32,6 +32,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../../imagens/favicon.png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
 	<link rel="stylesheet" href="../../css/barraLateral.css">
     <script src="https://kit.fontawesome.com/fece0716a5.js" crossorigin="anonymous"></script>
 
@@ -45,7 +46,7 @@
         }
 
         .item {
-	        height: 200px;
+	        height: 150px;
 	        width: 100%;
             margin: 10px;
             border-radius:10px;
@@ -60,7 +61,7 @@
         }
 
     </style>
-
+    
     <title><?php echo $dadosFuncionario['nome']; ?></title>
 </head>
 <body>
@@ -71,9 +72,9 @@
     </label>
     <nav>
         <ul>
-            <li><a href="projeto.php" class="link"><i class="fas fa-clipboard"></i> Meus projetos</a></li>
+            <li><a href="../projetos/projetos.php" class="link"><i class="fas fa-clipboard"></i> Meus projetos</a></li>
             <li><a href="funcionarios.php" class="link"><i class="fas fa-user-friends"></i> Funcionarios</a></li>
-            <li><a href="../php_action/logout.php" class="link"><i class="fas fa-sign-out-alt"></i>Sair</a></li>
+            <li><a href="../../php_action/logout.php" class="link"><i class="fas fa-sign-out-alt"></i>Sair</a></li>
         </ul>
     </nav>
 
@@ -111,14 +112,33 @@
                 
 	            <div class="item">
                     <?php echo $dadosEtapa['nome']; ?>
+                    <a data-toggle="modal" data-target="#modalExemplo<?php echo $dadosEtapa['id']; ?>"><i class="fas fa-trash-alt"></i></a>
                     
                     <hr>
-                    <br>
                     
-                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                        <input type="hidden" value="<?php echo $dadosEtapa['id']; ?>" name="idEtapa">
-                        <button type="submit" class="btn" name="btn-entrar-etapa" style="margin-top:80px;" data-toggle="modal" style="" data-target="#modal1">Entrar</button>
-                    </form>
+                    <div class="modal fade" id="modalExemplo<?php echo $dadosEtapa['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Excluir Etapa</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Deseja mesmo excluir <?php echo $dadosEtapa['nome']; ?>?
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                        <input type="hidden" name="idEtapa" value="<?php echo $dadosEtapa['id']; ?>">
+                                        <button type="submit" class="btn btn-danger" name="btn-excluir-etapa">Excluir</button>
+                                        <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 
                 </div>
 

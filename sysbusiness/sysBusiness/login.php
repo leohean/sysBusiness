@@ -36,7 +36,7 @@
 						    header('Location:funcionario/tarefas.php');
 					    else:
 						    $_SESSION['id_usuario']=$dados['id'];
-						    header('Location:empresa/projeto/projeto.php');
+						    header('Location:empresa/projetos/projetos.php');
 					    endif;
 
                 else:
@@ -118,7 +118,7 @@
                             <br><br><br>
 
                             <p align="center">
-                                <a href="novaSenha.php">Esqueceu sua senha?</a> |
+                                <a href="novaSenha/enviarEmail.php">Esqueceu sua senha?</a> |
                                 <a href="cadastroEmpresa.php">Cadastre-se</a>
                             </p>
 

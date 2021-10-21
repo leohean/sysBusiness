@@ -48,9 +48,9 @@
         $dados=$procuraEmpresa->fetch();
 
         $_SESSION['logado']=true;
-        $_SESSION['id_usuario']=$dados['idEmpresa'];
+        $_SESSION['id_usuario']=$dados['id'];
 
-        header('Location:empresa/homeEmpresa.php');
+        header('Location:empresa/projetos/projetos.php');
 
 			endif;
 	

@@ -18,7 +18,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-    <link rel="shortcut icon" href="../imagens/favicon.png">
+    <link rel="shortcut icon" href="../../imagens/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="../../css/css.css">
@@ -36,7 +36,7 @@
 
     <nav>
         <ul>
-            <li><a href="../projeto/projeto.php" class="link"><i class="fas fa-clipboard"></i> Meus projetos</a></li>
+            <li><a href="../projetos/projetos.php" class="link"><i class="fas fa-clipboard"></i> Meus projetos</a></li>
             <li><a href="../../php_action/logout.php" class="link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
         </ul>
     </nav>

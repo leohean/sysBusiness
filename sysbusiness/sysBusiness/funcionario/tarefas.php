@@ -8,20 +8,20 @@
 		header('Location:../../index.html');
 	endif;
 
+    if(isset($_POST['btn-entrar-tarefa'])):
+        $_SESSION['id_etapa']=$_POST['idEtapa'];
+		header('Location:homeTarefa.php');
+	endif;
+
     $errosHomeFuncionario=array();
 
     try{
-
-        $stmtFuncionario=$pdo->prepare('SELECT * FROM usuarioFuncionario WHERE idFuncionario=:id');
-        $stmtFuncionario->bindParam(':id',$_SESSION['id_usuario']);
-        $stmtFuncionario->execute();
-
-	    $dados=$stmtFuncionario->fetch();
+        $etapasFuncionario=$pdo->prepare('SELECT * FROM mov_usuario_etapa WHERE id_usuario=:idUsuario');
+        $etapasFuncionario->bindParam(":idUsuario",$_SESSION['id_usuario']);
+        $etapasFuncionario->execute();
 
     }catch(PDOException $e){
         $errosHomeFuncionario[]="Não foi possível conectar ao banco de dados";
-    }finally{
-        $pdo=null;
     }
 ?>
 
@@ -34,12 +34,39 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link rel="stylesheet" href="../css/barraLateral.css">
     <script src="https://kit.fontawesome.com/fece0716a5.js" crossorigin="anonymous"></script>
-    <title>Home</title>
+    <title>Minhas tarefas</title>
+
+    <style type="text/css">
+
+        .flex{
+	        max-width: 100%;
+	        margin: 0 auto;
+	        display: flex;
+	        flex-wrap: wrap;
+        }
+
+        .item {
+	        height: 150px;
+	        width: 100%;
+            margin: 10px;
+            border-radius:10px;
+	        background-color: rgb(235, 235, 235);
+	        text-align: center;
+        }
+
+        @media(max-width:480px){
+            .item {
+	            width: 100%;
+            } 
+        }
+
+    </style>
+    
 </head>
 <body>
 
     <input type="checkbox" id="chec">
-    <label for="chec">
+    <label for="chec" class="fixed">
         <img src="../imagens/menu.png" width="35px">
     </label>
     <nav>
@@ -50,10 +77,55 @@
 
     <div class="top">
 
-        <hr>
-
         <div class="container">
+
+            <br>
+
             <div class="display-4">Minhas tarefas</div>
+
+            <br>
+
+            <?php
+                    
+                    try{
+                        
+
+                        if($etapasFuncionario->rowCount()):
+                        while($dados=$etapasFuncionario->fetch()):
+                            $stmtDadosEtapas=$pdo->prepare('SELECT * FROM cad_etapa WHERE id=:idEtapa');
+                            $stmtDadosEtapas->bindParam(':idEtapa',$dados['id_etapa']);
+                            $stmtDadosEtapas->execute();
+                            $dadosEtapa=$stmtDadosEtapas->fetch();
+                ?>
+                
+	            <div class="item">
+
+                    <?php echo $dadosEtapa['nome']; ?>
+                    
+                    <hr>
+                    <br>
+                    
+                    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                        <input type="hidden" value="<?php echo $dadosEtapa['id']; ?>" name="idEtapa">
+                        <button type="submit" class="btn" name="btn-entrar-tarefa" style="margin-top:25px;" data-toggle="modal" style="" data-target="#modal1">Entrar</button>
+                    </form>
+                
+                </div>
+
+                <br>
+
+	            <?php
+                        endwhile;
+                        endif;
+
+                    }catch(PDOException $e){
+                        $erroHomeProjeto[]="Não foi possível carregar as suas tarefas";
+                    }
+                    finally{
+                        $pdo=null;
+                    }
+                ?>
+
         </div>
         
     <div>

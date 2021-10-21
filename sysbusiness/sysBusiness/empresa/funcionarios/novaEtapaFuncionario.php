@@ -8,11 +8,17 @@
 	endif;
 
     if(isset($_POST['btn-adicionar-etapa-funcionario'])):
-        $oi=1;
-        $stmtAdicionarEtapaFuncionario=$pdo->prepare('INSERT INTO mov_usuario_etapa (id_usuario, id_etapa) VALUES (:idUsuario,:idEtapa)');
-        $stmtAdicionarEtapaFuncionario->bindParam(':idUsuario',$_SESSION['bomdia']);
-        $stmtAdicionarEtapaFuncionario->bindParam(':idEtapa',$_POST['idEtapa']);
-        $stmtAdicionarEtapaFuncionario->execute();
+        $resultadoEtapaFuncionario=$pdo->prepare("SELECT * FROM mov_usuario_etapa WHERE id_usuario=:idUsuario AND id_etapa=:idEtapa");
+        $resultadoEtapaFuncionario->bindParam(':idUsuario',$_SESSION['bomdia']);
+        $resultadoEtapaFuncionario->bindParam(':idEtapa',$_POST['idEtapa']);
+        $resultadoEtapaFuncionario->execute();
+
+        if($resultadoEtapaFuncionario->rowCount()==0):
+            $adicionarEtapaFuncionario=$pdo->prepare('INSERT INTO mov_usuario_etapa (id_usuario, id_etapa) VALUES (:idUsuario,:idEtapa)');
+            $adicionarEtapaFuncionario->bindParam(':idUsuario',$_SESSION['bomdia']);
+            $adicionarEtapaFuncionario->bindParam(':idEtapa',$_POST['idEtapa']);
+            $adicionarEtapaFuncionario->execute();
+        endif;
     endif;
 ?>
 
@@ -20,12 +26,39 @@
 <html>
 <head>
 	<meta charset="utf-8">
-    <link rel="shortcut icon" href="../imagens/favicon.png">
+    <link rel="shortcut icon" href="../../imagens/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="../../css/css.css">
 	<link rel="stylesheet" href="../../css/barraLateral.css">
     <script src="https://kit.fontawesome.com/fece0716a5.js" crossorigin="anonymous"></script>
+
+    <style type="text/css">
+
+        .flex{
+	        max-width: 100%;
+	        margin: 0 auto;
+	        display: flex;
+	        flex-wrap: wrap;
+        }
+
+        .item {
+	        height: 150px;
+	        width: 100%;
+            margin: 10px;
+            border-radius:10px;
+	        background-color: rgb(235, 235, 235);
+	        text-align: center;
+        }
+
+        @media(max-width:480px){
+            .item {
+	            width: 100%;
+            } 
+        }
+
+    </style>
+
     <title>Funcionarios</title>
 </head>
 <body>
@@ -38,8 +71,7 @@
 
     <nav>
         <ul>
-            <li><a href="homeEmpresa.php" class="link"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="projeto.php" class="link"><i class="fas fa-clipboard"></i> Meus projetos</a></li>
+            <li><a href="../projetos/projetos.php" class="link"><i class="fas fa-clipboard"></i> Meus projetos</a></li>
             <li><a href="../../php_action/logout.php" class="link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
         </ul>
     </nav>
@@ -51,17 +83,9 @@
 
         <div class="container">
         
-            <div class="display-4">Etapas </div>
+            <div class="display-4">Etapas</div>
             
             <br>
-
-                <div class="table-responsive">
-                    <table class="table table-striped">
-
-                        <thead class="thead orange-color">
-                            <th scope="col">Nome</th>
-                            <th scope="col">Adicionar</th>
-                        </thead>
 
                         <tbody>
 
@@ -82,14 +106,25 @@
                                         
                             ?>
 
-                            <tr>
-                                <td><?php echo $dadosEtapa['nome']; ?></td>
+                            <div class="item">
 
                                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                <?php echo $dadosEtapa['nome']; ?>
                                     <input type="hidden" name="idEtapa" value="<?php echo $dadosEtapa['id']; ?>">
-                                    <td><button style="background:transparent; border: none !important;" type="submit" name="btn-adicionar-etapa-funcionario"><i class="fas fa-plus-circle"></i></button></i></td>
-                                </form>                   
-                            </tr>
+                                    <button style="background:transparent; border: none !important;" type="submit" name="btn-adicionar-etapa-funcionario"><i class="fas fa-plus-circle"></i></button></i>
+                                </form>  
+                    
+                                <hr>
+                    
+                
+                            </div>
+
+                            <br>
+
+                            
+
+                                                  
+                            
 
                             <?php 
                                                 endwhile;
@@ -104,15 +139,6 @@
                                     $pdo=null;
                                 }
                             ?>
-
-                            <tr>
-                                <td align="center">- / -</td>
-                                <td align="center">- / -</td>
-                            <tr>
-
-                        </tbody>
-
-                    </table>
                     
                 </div>
 
